@@ -1,1 +1,100 @@
 
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DAO.entreprise</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial;background:#f1f5f9;color:#172554}
+header{background:#123b67;color:white;padding:22px}
+header h1{margin:0}
+nav{display:flex;gap:15px;padding:15px;background:white;overflow-x:auto}
+nav a{color:#123b67;text-decoration:none;font-weight:bold;white-space:nowrap}
+main{padding:18px;max-width:1100px;margin:auto}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px}
+.card,section{background:white;padding:20px;border-radius:12px;margin-bottom:15px}
+.card h3{font-size:15px;color:#64748b}
+.number{font-size:28px;color:#087e69;font-weight:bold}
+button{background:#087e69;color:white;border:0;border-radius:7px;padding:12px;cursor:pointer}
+input{width:100%;padding:12px;margin:8px 0;border:1px solid #cbd5e1;border-radius:7px}
+footer{text-align:center;padding:25px;color:#64748b}
+</style>
+</head>
+<body>
+<header>
+<h1>DAO.entreprise</h1>
+<p>Gestion logistique et commerciale</p>
+</header>
+<nav>
+<a href="#dashboard">Tableau de bord</a>
+<a href="#clients">Clients</a>
+<a href="#commandes">Commandes</a>
+<a href="#stock">Stocks</a>
+<a href="#livraisons">Livraisons</a>
+</nav>
+<main>
+<h2 id="dashboard">Tableau de bord</h2>
+<p>Bienvenue dans votre espace de gestion.</p>
+<div class="cards">
+<div class="card"><h3>Clients</h3><div class="number" id="nbClients">0</div></div>
+<div class="card"><h3>Commandes</h3><div class="number" id="nbCommandes">0</div></div>
+<div class="card"><h3>Produits en stock</h3><div class="number" id="nbStock">0</div></div>
+<div class="card"><h3>Livraisons</h3><div class="number" id="nbLivraisons">0</div></div>
+</div>
+<section id="clients">
+<h2>Gestion des clients</h2>
+<input id="client" placeholder="Nom du client">
+<button onclick="add('client','clients','listeClients','nbClients')">Ajouter un client</button>
+<ul id="listeClients"></ul>
+</section>
+<section id="commandes">
+<h2>Gestion des commandes</h2>
+<input id="commande" placeholder="Description de la commande">
+<button onclick="add('commande','commandes','listeCommandes','nbCommandes')">Ajouter une commande</button>
+<ul id="listeCommandes"></ul>
+</section>
+<section id="stock">
+<h2>Gestion des stocks</h2>
+<input id="produit" placeholder="Nom du produit">
+<input id="quantite" type="number" min="1" placeholder="Quantité">
+<button onclick="addStock()">Ajouter au stock</button>
+<ul id="listeStock"></ul>
+</section>
+<section id="livraisons">
+<h2>Suivi des livraisons</h2>
+<input id="livraison" placeholder="Référence de livraison">
+<button onclick="add('livraison','livraisons','listeLivraisons','nbLivraisons')">Ajouter une livraison</button>
+<ul id="listeLivraisons"></ul>
+</section>
+</main>
+<footer>DAO.entreprise - Gestion intelligente</footer>
+<script>
+let data={clients:[],commandes:[],livraisons:[]};
+let stocks=[];
+function add(field,key,list,count){
+let v=document.getElementById(field).value.trim();
+if(!v)return;
+data[key].push(v);
+document.getElementById(list).innerHTML=data[key].map(x=>'<li>'+safe(x)+'</li>').join('');
+document.getElementById(count).textContent=data[key].length;
+document.getElementById(field).value='';
+}
+function addStock(){
+let n=document.getElementById('produit').value.trim();
+let q=Number(document.getElementById('quantite').value);
+if(!n||!Number.isInteger(q)||q<1)return;
+stocks.push(n+' : '+q);
+document.getElementById('listeStock').innerHTML=stocks.map(x=>'<li>'+safe(x)+'</li>').join('');
+document.getElementById('nbStock').textContent=stocks.length;
+document.getElementById('produit').value='';
+document.getElementById('quantite').value='';
+}
+function safe(s){
+return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+</script>
+</body>
+</html>
