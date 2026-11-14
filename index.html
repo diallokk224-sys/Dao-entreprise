@@ -1,102 +1,208 @@
-git add .
-git commit -m "ma modification"
-git push
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>DAO.entreprise</title>
 <style>
+:root{--bleu:#123b66;--vert:#0a7a5a;--rouge:#c0392b;--fond:#f0f3f8;--txt:#14284b;--gris:#5b6b85}
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial;background:#f1f5f9;color:#172554}
-header{background:#123b67;color:white;padding:22px}
-header h1{margin:0}
-nav{display:flex;gap:15px;padding:15px;background:white;overflow-x:auto}
-nav a{color:#123b67;text-decoration:none;font-weight:bold;white-space:nowrap}
-main{padding:18px;max-width:1100px;margin:auto}
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px}
-.card,section{background:white;padding:20px;border-radius:12px;margin-bottom:15px}
-.card h3{font-size:15px;color:#64748b}
-.number{font-size:28px;color:#087e69;font-weight:bold}
-button{background:#087e69;color:white;border:0;border-radius:7px;padding:12px;cursor:pointer}
-input{width:100%;padding:12px;margin:8px 0;border:1px solid #cbd5e1;border-radius:7px}
-footer{text-align:center;padding:25px;color:#64748b}
+body{margin:0;font-family:system-ui,Arial,sans-serif;background:var(--fond);color:var(--txt)}
+header{background:var(--bleu);color:#fff;padding:22px 16px}
+header h1{margin:0;font-size:28px}
+header p{margin:4px 0 0;opacity:.85}
+nav{display:flex;overflow-x:auto;background:#fff;position:sticky;top:0;z-index:5;box-shadow:0 1px 4px #0002}
+nav button{flex:none;border:0;background:none;padding:14px 16px;font-size:15px;font-weight:600;color:var(--txt);border-bottom:3px solid transparent}
+nav button.on{border-color:var(--vert);color:var(--vert)}
+main{padding:16px;max-width:800px;margin:auto}
+h2{margin:0 0 10px;font-size:20px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.card{background:#fff;border-radius:14px;padding:16px;margin-bottom:12px}
+.grid .card{margin:0}
+.stat small{color:var(--gris);font-weight:600}
+.stat b{display:block;font-size:22px;color:var(--vert);margin-top:6px;word-break:break-word}
+.stat.warn b{color:var(--rouge)}
+input,select{width:100%;padding:12px;margin:5px 0;border:1px solid #c5cedd;border-radius:10px;font-size:16px;background:#fff;color:var(--txt)}
+.btn{background:var(--vert);color:#fff;border:0;border-radius:10px;padding:12px 16px;font-size:16px;font-weight:600;width:100%;margin-top:6px}
+.sm{width:auto;padding:8px 12px;font-size:14px;margin:0}
+.red{background:var(--rouge)}
+.row{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 0;border-top:1px solid #e3e8f0}
+.row small{color:var(--gris);display:block}
+.bars{display:flex;align-items:flex-end;gap:6px;height:120px}
+.bars div{flex:1;text-align:center;font-size:12px;color:var(--gris)}
+.bars i{display:block;background:var(--vert);border-radius:4px 4px 0 0;min-height:2px;margin-bottom:4px}
+.tag{font-size:12px;padding:2px 8px;border-radius:8px;background:#fde8e5;color:var(--rouge);white-space:nowrap}
+.ok{background:#e0f4ec;color:var(--vert)}
+.vide{color:var(--gris)}
 </style>
 </head>
 <body>
 <header>
-<h1>DAO.entreprise</h1>
-<p>Gestion logistique et commerciale</p>
+  <h1>DAO.entreprise</h1>
+  <p>Gestion logistique et commerciale</p>
 </header>
-<nav>
-<a href="#dashboard">Tableau de bord</a>
-<a href="#clients">Clients</a>
-<a href="#commandes">Commandes</a>
-<a href="#stock">Stocks</a>
-<a href="#livraisons">Livraisons</a>
-</nav>
-<main>
-<h2 id="dashboard">Tableau de bord</h2>
-<p>Bienvenue dans votre espace de gestion.</p>
-<div class="cards">
-<div class="card"><h3>Clients</h3><div class="number" id="nbClients">0</div></div>
-<div class="card"><h3>Commandes</h3><div class="number" id="nbCommandes">0</div></div>
-<div class="card"><h3>Produits en stock</h3><div class="number" id="nbStock">0</div></div>
-<div class="card"><h3>Livraisons</h3><div class="number" id="nbLivraisons">0</div></div>
-</div>
-<section id="clients">
-<h2>Gestion des clients</h2>
-<input id="client" placeholder="Nom du client">
-<button onclick="add('client','clients','listeClients','nbClients')">Ajouter un client</button>
-<ul id="listeClients"></ul>
-</section>
-<section id="commandes">
-<h2>Gestion des commandes</h2>
-<input id="commande" placeholder="Description de la commande">
-<button onclick="add('commande','commandes','listeCommandes','nbCommandes')">Ajouter une commande</button>
-<ul id="listeCommandes"></ul>
-</section>
-<section id="stock">
-<h2>Gestion des stocks</h2>
-<input id="produit" placeholder="Nom du produit">
-<input id="quantite" type="number" min="1" placeholder="Quantité">
-<button onclick="addStock()">Ajouter au stock</button>
-<ul id="listeStock"></ul>
-</section>
-<section id="livraisons">
-<h2>Suivi des livraisons</h2>
-<input id="livraison" placeholder="Référence de livraison">
-<button onclick="add('livraison','livraisons','listeLivraisons','nbLivraisons')">Ajouter une livraison</button>
-<ul id="listeLivraisons"></ul>
-</section>
-</main>
-<footer>DAO.entreprise - Gestion intelligente</footer>
+<nav id="nav"></nav>
+<main id="app"></main>
+
 <script>
-let data={clients:[],commandes:[],livraisons:[]};
-let stocks=[];
-function add(field,key,list,count){
-let v=document.getElementById(field).value.trim();
-if(!v)return;
-data[key].push(v);
-document.getElementById(list).innerHTML=data[key].map(x=>'<li>'+safe(x)+'</li>').join('');
-document.getElementById(count).textContent=data[key].length;
-document.getElementById(field).value='';
+let D = { clients: [], produits: [], commandes: [] };
+try { const s = localStorage.getItem('dao'); if (s) D = JSON.parse(s); } catch (e) {}
+const save = () => { try { localStorage.setItem('dao', JSON.stringify(D)); } catch (e) {} };
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmt = n => Number(n).toLocaleString('fr-FR') + ' GNF';
+const uid = () => Date.now() + Math.floor(Math.random() * 1000);
+const nom = (arr, id) => { const x = arr.find(a => a.id == id); return x ? x.nom : '?'; };
+const ligne = o => esc(nom(D.clients, o.client)) + ' : ' + o.qte + ' × ' + esc(nom(D.produits, o.produit));
+const dt = o => new Date(o.date).toLocaleDateString('fr-FR');
+const vide = t => '<p class="vide">' + t + '</p>';
+
+let tab = 'dash';
+const tabs = [['dash','Tableau de bord'],['clients','Clients'],['produits','Stocks'],['commandes','Commandes'],['livraisons','Livraisons'],['credits','Crédits']];
+
+/* Actions */
+function addClient() {
+  const n = $('cn').value.trim();
+  if (!n) return alert('Écris le nom du client.');
+  D.clients.push({ id: uid(), nom: n, tel: $('ct').value.trim() });
+  save(); render();
 }
-function addStock(){
-let n=document.getElementById('produit').value.trim();
-let q=Number(document.getElementById('quantite').value);
-if(!n||!Number.isInteger(q)||q<1)return;
-stocks.push(n+' : '+q);
-document.getElementById('listeStock').innerHTML=stocks.map(x=>'<li>'+safe(x)+'</li>').join('');
-document.getElementById('nbStock').textContent=stocks.length;
-document.getElementById('produit').value='';
-document.getElementById('quantite').value='';
+function delClient(id) {
+  if (D.commandes.some(o => o.client == id)) return alert('Ce client a des commandes : impossible de le supprimer.');
+  D.clients = D.clients.filter(c => c.id != id); save(); render();
 }
-function safe(s){
-return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function addProduit() {
+  const n = $('pn').value.trim(), q = +$('pq').value, p = +$('pp').value;
+  if (!n || q < 0 || p <= 0) return alert('Remplis le nom, la quantité et le prix.');
+  D.produits.push({ id: uid(), nom: n, qte: q, prix: p });
+  save(); render();
 }
+function delProduit(id) {
+  if (D.commandes.some(o => o.produit == id)) return alert('Ce produit a des commandes : impossible de le supprimer.');
+  D.produits = D.produits.filter(p => p.id != id); save(); render();
+}
+function restock(id) {
+  const q = parseInt(prompt('Combien d’unités ajouter au stock ?'), 10);
+  if (!q || q <= 0) return;
+  D.produits.find(p => p.id == id).qte += q; save(); render();
+}
+function addCommande() {
+  const c = $('oc').value, p = $('op').value, q = +$('oq').value;
+  const pr = D.produits.find(x => x.id == p);
+  if (!c || !pr || q <= 0) return alert('Choisis un client, un produit et une quantité.');
+  if (q > pr.qte) return alert('Stock insuffisant : ' + pr.qte + ' disponible.');
+  pr.qte -= q;
+  D.commandes.push({ id: uid(), date: new Date().toISOString(), client: +c, produit: pr.id, qte: q, total: q * pr.prix, paye: $('oy').value === 'paye', livre: false });
+  save(); render();
+}
+function toggle(id, k) { const o = D.commandes.find(x => x.id == id); o[k] = !o[k]; save(); render(); }
+
+function exporter() {
+  const b = new Blob([JSON.stringify(D)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(b);
+  a.download = 'sauvegarde-dao.json';
+  a.click();
+}
+function importer(e) {
+  const f = e.target.files[0]; if (!f) return;
+  const r = new FileReader();
+  r.onload = () => {
+    try {
+      const d = JSON.parse(r.result);
+      if (d.clients && d.produits && d.commandes) { D = d; save(); render(); alert('Données restaurées.'); }
+      else alert('Fichier invalide.');
+    } catch (x) { alert('Fichier invalide.'); }
+  };
+  r.readAsText(f);
+}
+
+/* Vues */
+function vDash() {
+  const ventes = D.commandes.reduce((s, o) => s + o.total, 0);
+  const impayes = D.commandes.filter(o => !o.paye).reduce((s, o) => s + o.total, 0);
+  const attente = D.commandes.filter(o => !o.livre).length;
+  const bas = D.produits.filter(p => p.qte <= 5).length;
+  const jours = [...Array(7)].map((_, i) => { const d = new Date(); d.setDate(d.getDate() - 6 + i); return d; });
+  const tot = jours.map(d => D.commandes.filter(o => new Date(o.date).toDateString() === d.toDateString()).reduce((s, o) => s + o.total, 0));
+  const max = Math.max(...tot, 1);
+  const m = {}; D.commandes.forEach(o => m[o.produit] = (m[o.produit] || 0) + o.qte);
+  const top = Object.entries(m).sort((a, b) => b[1] - a[1]).slice(0, 3);
+  return `
+  <div class="grid">
+    <div class="card stat"><small>Clients</small><b>${D.clients.length}</b></div>
+    <div class="card stat"><small>Commandes</small><b>${D.commandes.length}</b></div>
+    <div class="card stat"><small>Ventes totales</small><b>${fmt(ventes)}</b></div>
+    <div class="card stat warn"><small>Crédits impayés</small><b>${fmt(impayes)}</b></div>
+    <div class="card stat"><small>Livraisons en attente</small><b>${attente}</b></div>
+    <div class="card stat warn"><small>Stock faible (5 ou moins)</small><b>${bas}</b></div>
+  </div>
+  <div class="card"><h2>Ventes des 7 derniers jours</h2>
+    <div class="bars">${tot.map((t, i) => `<div title="${fmt(t)}"><i style="height:${Math.round(t / max * 85)}px"></i>${jours[i].toLocaleDateString('fr-FR', { weekday: 'short' }).slice(0, 3)}</div>`).join('')}</div>
+  </div>
+  <div class="card"><h2>Produits les plus vendus</h2>
+    ${top.map(t => `<div class="row"><span>${esc(nom(D.produits, t[0]))}</span><b>${t[1]}</b></div>`).join('') || vide('Aucune vente pour le moment.')}
+  </div>
+  <div class="card"><h2>Sauvegarde</h2>
+    <p class="vide">Tes données sont gardées dans ce téléphone. Télécharge une copie régulièrement.</p>
+    <button class="btn" onclick="exporter()">Sauvegarder mes données</button>
+    <p class="vide" style="margin-bottom:0">Restaurer une sauvegarde :</p>
+    <input type="file" accept=".json,application/json" onchange="importer(event)">
+  </div>`;
+}
+
+function vClients() {
+  return `
+  <div class="card"><h2>Gestion des clients</h2>
+    <input id="cn" placeholder="Nom du client">
+    <input id="ct" placeholder="Téléphone" type="tel">
+    <button class="btn" onclick="addClient()">Ajouter le client</button>
+  </div>
+  <div class="card">${D.clients.map(c => `<div class="row"><span>${esc(c.nom)}<small>${esc(c.tel)}</small></span><button class="btn sm red" onclick="delClient(${c.id})">Supprimer</button></div>`).join('') || vide('Aucun client. Ajoute le premier ci-dessus.')}</div>`;
+}
+
+function vProduits() {
+  return `
+  <div class="card"><h2>Gestion des stocks</h2>
+    <input id="pn" placeholder="Nom du produit">
+    <input id="pq" placeholder="Quantité en stock" type="number" inputmode="numeric" min="0">
+    <input id="pp" placeholder="Prix unitaire (GNF)" type="number" inputmode="numeric" min="1">
+    <button class="btn" onclick="addProduit()">Ajouter le produit</button>
+  </div>
+  <div class="card">${D.produits.map(p => `<div class="row"><span>${esc(p.nom)} ${p.qte <= 5 ? '<span class="tag">Stock faible</span>' : ''}<small>${p.qte} en stock · ${fmt(p.prix)}</small></span><span><button class="btn sm" onclick="restock(${p.id})">+ Stock</button> <button class="btn sm red" onclick="delProduit(${p.id})">Supprimer</button></span></div>`).join('') || vide('Aucun produit. Ajoute le premier ci-dessus.')}</div>`;
+}
+
+function vCommandes() {
+  const pret = D.clients.length && D.produits.length;
+  return `
+  <div class="card"><h2>Nouvelle commande</h2>
+    ${pret ? `
+    <select id="oc"><option value="">Choisir le client</option>${D.clients.map(c => `<option value="${c.id}">${esc(c.nom)}</option>`).join('')}</select>
+    <select id="op"><option value="">Choisir le produit</option>${D.produits.map(p => `<option value="${p.id}">${esc(p.nom)} (${p.qte} en stock)</option>`).join('')}</select>
+    <input id="oq" placeholder="Quantité" type="number" inputmode="numeric" min="1">
+    <select id="oy"><option value="paye">Payé comptant</option><option value="credit">À crédit</option></select>
+    <button class="btn" onclick="addCommande()">Enregistrer la commande</button>` : vide('Ajoute d’abord au moins un client et un produit.')}
+  </div>
+  <div class="card">${D.commandes.slice().reverse().map(o => `<div class="row"><span>${ligne(o)}<small>${dt(o)} · ${fmt(o.total)}</small></span><span class="tag ${o.paye ? 'ok' : ''}">${o.paye ? 'Payé' : 'Crédit'}</span></div>`).join('') || vide('Aucune commande.')}</div>`;
+}
+
+function vLiv() {
+  return `<div class="card"><h2>Livraisons</h2>${D.commandes.slice().reverse().map(o => `<div class="row"><span>${ligne(o)}<small>${dt(o)}</small></span><button class="btn sm ${o.livre ? '' : 'red'}" onclick="toggle(${o.id},'livre')">${o.livre ? 'Livrée' : 'À livrer'}</button></div>`).join('') || vide('Aucune livraison.')}</div>`;
+}
+
+function vCred() {
+  const l = D.commandes.filter(o => !o.paye);
+  const t = l.reduce((s, o) => s + o.total, 0);
+  return `<div class="card"><h2>Crédits en cours</h2><p><b>${fmt(t)}</b> à recevoir</p>${l.map(o => `<div class="row"><span>${ligne(o)}<small>${dt(o)} · ${fmt(o.total)}</small></span><button class="btn sm" onclick="toggle(${o.id},'paye')">Marquer payé</button></div>`).join('') || vide('Aucun crédit en cours.')}</div>`;
+}
+
+function render() {
+  $('nav').innerHTML = tabs.map(t => `<button class="${t[0] === tab ? 'on' : ''}" onclick="go('${t[0]}')">${t[1]}</button>`).join('');
+  const v = { dash: vDash, clients: vClients, produits: vProduits, commandes: vCommandes, livraisons: vLiv, credits: vCred }[tab];
+  $('app').innerHTML = v();
+}
+function go(t) { tab = t; render(); window.scrollTo(0, 0); }
+render();
 </script>
 </body>
 </html>
